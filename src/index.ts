@@ -81,11 +81,11 @@ function mapLocales(locale: string) {
   return value
 }
 
-export function pick(
-  languages: string[],
+export function pick<T extends string>(
+  languages: T[],
   acceptLanguage: string,
   options: Partial<Options> = {}
-): string | undefined {
+): T | undefined {
   const langs = languages.filter((string) => isString(string))
 
   if (langs.length === 0 || !isString(acceptLanguage)) {
