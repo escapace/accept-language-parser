@@ -23,7 +23,7 @@ language objects sorted by quality.
 ```js
 import { parse } from '@escapace/accept-language-parser'
 
-const languages = parser.parse('en-GB,en;q=0.8')
+const languages = parse('en-GB,en;q=0.8')
 
 console.log(languages)
 ```
