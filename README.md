@@ -3,27 +3,34 @@
 Parses the accept-language header from an HTTP request and produces an array of
 language objects sorted by quality.
 
-### Installation:
+## Installation
 
-```bash
-npm install accept-language-parser
-```
+1. Authenticate to GitHub Packages. For more information, see "[Authenticating to
+   GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages)."
+2. In the same directory as your `package.json` file, create or edit an `.npmrc`
+   file to include a line:
 
-### API
+   `@escpace:registry=https://npm.pkg.github.com`
 
-#### parser.parse(acceptLanguageHeader)
+3. Install the package.
+   
+   `npm install @escpace/accept-language-parser`
 
-```
-var parser = require('accept-language-parser');
+## API
 
-var languages = parser.parse('en-GB,en;q=0.8');
+#### parse(acceptLanguageHeader)
 
-console.log(languages);
+```js
+import { parse } from '@escapace/accept-language-parser'
+
+const languages = parser.parse('en-GB,en;q=0.8')
+
+console.log(languages)
 ```
 
 Output will be:
 
-```
+```js
 [
   {
     code: "en",
@@ -40,14 +47,12 @@ Output will be:
 
 Output is always sorted in quality order from highest -> lowest. As per the HTTP spec, omitting the quality value implies 1.0.
 
-#### parser.pick(supportedLangugagesArray, acceptLanguageHeader, options = {})
+#### pick(supportedLangugagesArray, acceptLanguageHeader, options = {})
 
-_Alias_: parser.pick(supportedLanguagesArray, parsedAcceptLanguageHeader)
+```js
+import { pick } from '@escapace/accept-language-parser'
 
-```javascript
-var parser = require('accept-language-parser')
-
-var language = parser.pick(
+const language = pick(
   ['fr-CA', 'fr-FR', 'fr'],
   'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8'
 )
@@ -57,23 +62,23 @@ console.log(language)
 
 Output will be:
 
-```javascript
+```js
 'fr-CA'
 ```
 
-The `options` currently supports only the `loose` option which allows partial matching on supported languages.
+The `options` supports the `loose` flag which allows partial matching on supported languages.
 
 For example:
 
-```javascript
-parser.pick(['fr', 'en'], 'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8', {
+```js
+pick(['fr', 'en'], 'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8', {
   loose: true
 })
 ```
 
 Would return:
 
-```javascript
+```js
 'fr'
 ```
 
