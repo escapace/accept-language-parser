@@ -53,7 +53,9 @@
   "main": "./lib/cjs/index.cjs",
   "private": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com",
+    "tag": "latest"
   },
   "repository": "https://github.com/escapace/accept-language-parser.git",
   "scripts": {
