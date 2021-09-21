@@ -43,14 +43,13 @@
   },
   "exports": {
     "import": "./lib/esm/index.js",
-    "require": "./lib/cjs/index.cjs"
+    "require": "./lib/cjs/index.js"
   },
   "files": [
     "lib"
   ],
   "homepage": "https://github.com/escapace/accept-language-parser",
   "license": "MPL-2.0",
-  "main": "./lib/cjs/index.cjs",
   "private": false,
   "publishConfig": {
     "access": "public",
@@ -60,7 +59,7 @@
   "repository": "https://github.com/escapace/accept-language-parser.git",
   "scripts": {
     "build": "rm -rf lib && mkdir -p lib/cjs lib/esm lib/types && npm run build:cjs && npm run build:esm && npm run build:types",
-    "build:cjs": "esbuild src/index.ts --bundle --sourcemap --format=cjs --platform=node --target=node14.17.0 --outfile=./lib/cjs/index.cjs",
+    "build:cjs": "esbuild src/index.ts --bundle --sourcemap --format=cjs --platform=node --target=node14.17.0 --outfile=./lib/cjs/index.js",
     "build:esm": "esbuild src/index.ts --bundle --sourcemap --format=esm --outfile=./lib/esm/index.js",
     "build:types": "tsc --emitDeclarationOnly --declarationDir lib/types",
     "lint": "ls-lint && eslint 'src/**/*.ts?(x)'",
