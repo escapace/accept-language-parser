@@ -1,7 +1,7 @@
 {
   "name": "@escapace/accept-language-parser",
   "description": "",
-  "version": "0.0.0",
+  "version": "1.4.0",
   "author": "escapace <opensource@escapace.com>",
   "bugs": "https://github.com/escapace/accept-language-parser/issues",
   "devDependencies": {
