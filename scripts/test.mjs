@@ -32,5 +32,6 @@ await build({
   format: 'esm',
   outbase: directorySrc,
   outdir: directoryTests,
+  outExtension: { '.js': '.mjs' },
   logLevel: 'info'
 })
