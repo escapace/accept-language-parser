@@ -5,16 +5,7 @@ language objects sorted by quality.
 
 ## Installation
 
-1. Authenticate to GitHub Packages. For more information, see "[Authenticating to
-   GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages)."
-2. In the same directory as your `package.json` file, create or edit an `.npmrc`
-   file to include a line:
-
-   `@escpace:registry=https://npm.pkg.github.com`
-
-3. Install the package.
-   
-   `npm install @escpace/accept-language-parser`
+`npm install @escpace/accept-language-parser`
 
 ## API
 
@@ -31,18 +22,18 @@ console.log(languages)
 Output will be:
 
 ```js
-[
+;[
   {
-    code: "en",
-    region: "GB",
+    code: 'en',
+    region: 'GB',
     quality: 1.0
   },
   {
-    code: "en",
+    code: 'en',
     region: undefined,
     quality: 0.8
   }
-];
+]
 ```
 
 Output is always sorted in quality order from highest -> lowest. As per the HTTP spec, omitting the quality value implies 1.0.
