@@ -4,6 +4,8 @@
 pnpm exec syncpack set-semver-ranges --dev --source 'package.json' || exit 1
 pnpm exec syncpack format --source 'package.json' || exit 1
 
+git add package.json
+
 pnpm exec ls-lint || exit 1
 pnpm exec lint-staged || exit 1
 pnpm run typecheck || exit 1

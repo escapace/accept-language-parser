@@ -37,8 +37,6 @@
   "engines": {
     "node": ">=16.14.0"
   },
-  "main": "lib/cjs/index.cjs",
-  "module": "lib/esm/index.mjs",
   "exports": {
     "import": "./lib/esm/index.mjs",
     "require": "./lib/cjs/index.cjs"
@@ -48,6 +46,8 @@
   ],
   "homepage": "https://github.com/escapace/accept-language-parser",
   "license": "MPL-2.0",
+  "main": "lib/cjs/index.cjs",
+  "module": "lib/esm/index.mjs",
   "private": false,
   "repository": "https://github.com/escapace/accept-language-parser.git",
   "scripts": {
