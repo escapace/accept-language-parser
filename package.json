@@ -49,6 +49,9 @@
   "main": "lib/cjs/index.cjs",
   "module": "lib/esm/index.mjs",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": "https://github.com/escapace/accept-language-parser.git",
   "scripts": {
     "build": "rm -rf lib && mkdir -p lib/cjs lib/esm lib/types && npm run build:cjs && npm run build:esm && npm run build:types",
