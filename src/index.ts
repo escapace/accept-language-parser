@@ -74,7 +74,7 @@ const newLocales: Record<string, string> = {
   'zh-cn': 'zh-Hans-CN'
 }
 
-function mapLocales(locale: string) {
+function mapLocales(locale: string): string {
   let value = locale.toLowerCase().replace(/_/g, '-')
   value = newLocales[value] ?? value
 
@@ -110,7 +110,6 @@ export function pick<T extends string>(
     }
   })
 
-  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let i = 0; i < parsed.length; i++) {
     const lang = parsed[i]
     const langCode = lang.code?.toLowerCase()

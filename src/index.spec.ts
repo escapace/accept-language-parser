@@ -4,7 +4,7 @@ import { assert } from 'chai'
 const assertResult = function (
   expected: Partial<ParseResult>,
   actual: Partial<ParseResult>
-) {
+): void {
   assert.equal(actual.code, expected.code)
 
   if (actual.script !== undefined || expected.script !== undefined) {
@@ -119,7 +119,7 @@ describe('accept-language#pick()', function () {
 
   it('empty', function () {
     const result = pick(
-      // @ts-expect-error
+      // @ts-expect-error test incorrect type
       [true],
       'fr-CA,fr;q=0.2,en-US;q=0.6,en;q=0.4,*;q=0.5'
     )
