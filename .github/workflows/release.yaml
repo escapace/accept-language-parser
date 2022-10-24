@@ -1,4 +1,5 @@
 name: release
+
 on:
   push:
     tags:
@@ -14,34 +15,32 @@ on:
     paths-ignore:
       - README.md
       - LICENSE
+
 jobs:
-  pnpm-version:
-    uses: ./.github/workflows/pnpm-version.yml
-  node-version:
-    uses: ./.github/workflows/node-version.yml
+  context:
+    uses: ./.github/workflows/workflow-call-context.yaml
   release:
     needs:
-      - pnpm-version
-      - node-version
+      - context
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3
         with:
+          ref: ${{ needs.context.outputs.ref }}
           fetch-depth: 0
       - name: setup node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ needs.node-version.outputs.value }}
+          node-version: ${{ needs.context.outputs.node-version }}
       - name: install pnpm
         uses: pnpm/action-setup@v2.2.4
         with:
-          version: ${{ needs.pnpm-version.outputs.value }}
+          version: ${{ needs.context.outputs.pnpm-version }}
           run_install: false
       - name: get pnpm store directory
         id: pnpm-store-path
-        run: |
-          echo "::set-output name=value::$(pnpm store path)"
+        run: echo "value=$(pnpm store path)" >> $GITHUB_OUTPUT
       - name: pnpm cache
         uses: actions/cache@v3
         with:
@@ -60,7 +59,7 @@ jobs:
       - name: build
         run: pnpm run build
       - name: write .npmrc
-        if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')
+        if: needs.context.outputs.environment == 'production'
         run: |
           cat << EOF > "$HOME/.npmrc"
             //registry.npmjs.org/:_authToken=$NPM_TOKEN
@@ -68,11 +67,11 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: pnpm release
-        if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')
+        if: needs.context.outputs.environment == 'production'
         run: |
-          pnpm run release -- ${{ github.ref_name }}
+          pnpm run release -- ${{ needs.context.outputs.version }}
       - name: github release
-        if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')
+        if: needs.context.outputs.environment == 'production'
         run: |
           pnpm exec changelogithub
           # gh release create ${{ github.ref_name }} --title ${{ github.ref_name }} --generate-notes
