@@ -64,12 +64,13 @@ jobs:
           cat << EOF > "$HOME/.npmrc"
             //registry.npmjs.org/:_authToken=$NPM_TOKEN
           EOF
-          pnpm run release -- --access=public ${{ needs.context.outputs.version }}
+          pnpm run release --access public ${{ needs.context.outputs.version }}
+
           cat << EOF > "$HOME/.npmrc"
             @escapace:registry=https://npm.pkg.github.com/
             //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN
           EOF
-          pnpm run release -- ${{ needs.context.outputs.version }}
+          pnpm run release ${{ needs.context.outputs.version }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
