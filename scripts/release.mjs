@@ -32,12 +32,6 @@ async function main() {
 
   const packageJson = await fse.readJson(packageJsonPath)
 
-  if (packageJson.version === version) {
-    error(
-      `Package version from "${version}" matches the current version "${packageJson.version}"`
-    )
-  }
-
   console.log(`Releasing ${packageJson.name}@${version}`)
 
   fse.writeJSON(packageJsonPath, { ...packageJson, version })
