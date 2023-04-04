@@ -1,7 +1,7 @@
 {
   "name": "@escapace/accept-language-parser",
   "description": "",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "escapace <opensource@escapace.com>",
   "bugs": "https://github.com/escapace/accept-language-parser/issues",
   "devDependencies": {
@@ -38,7 +38,7 @@
   },
   "engines": {
     "node": ">= 18.2.0",
-    "pnpm": ">= 7.14.0"
+    "pnpm": ">= 8.1.1"
   },
   "exports": {
     ".": {
