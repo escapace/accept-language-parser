@@ -58,28 +58,21 @@ jobs:
         uses: codecov/codecov-action@v3.1.1
       - name: build
         run: pnpm run build
-      - name: write .npmrc
+      - name: release
         if: needs.context.outputs.environment == 'production'
         run: |
           cat << EOF > "$HOME/.npmrc"
             //registry.npmjs.org/:_authToken=$NPM_TOKEN
           EOF
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: pnpm release
-        if: needs.context.outputs.environment == 'production'
-        run: |
-          pnpm run release -- ${{ needs.context.outputs.version }}
-      - name: write .npmrc
-        if: needs.context.outputs.environment == 'production'
-        run: |
+          pnpm run release -- --access=public ${{ needs.context.outputs.version }}
           cat << EOF > "$HOME/.npmrc"
+            @escapace:registry=https://npm.pkg.github.com/
             //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN
           EOF
-      - name: pnpm release
-        if: needs.context.outputs.environment == 'production'
-        run: |
           pnpm run release -- ${{ needs.context.outputs.version }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: github release
         if: needs.context.outputs.environment == 'production'
         run: |

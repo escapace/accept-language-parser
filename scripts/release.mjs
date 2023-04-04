@@ -13,7 +13,8 @@ const error = (message) => {
 
 async function main() {
   const args = arg({
-    '--dry-run': Boolean
+    '--dry-run': Boolean,
+    '--access': String
   })
 
   let version = args._[0]
@@ -24,6 +25,12 @@ async function main() {
 
   if (!semver.valid(version)) {
     error(`Incorrect version "${version}"`)
+  }
+
+  const access = args['--access'] ?? 'public'
+
+  if (!['public', 'restricted'].includes(access)) {
+    throw new Error(`Access should be either 'public' or 'restricted'.`)
   }
 
   version = semver.clean(version)
@@ -52,7 +59,7 @@ async function main() {
       'publish',
       '--no-git-checks',
       '--access',
-      'public',
+      access,
       '--publish-branch',
       'trunk',
       args['--dry-run'] ? '--dry-run' : undefined
