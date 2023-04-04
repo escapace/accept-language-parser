@@ -70,6 +70,16 @@ jobs:
         if: needs.context.outputs.environment == 'production'
         run: |
           pnpm run release -- ${{ needs.context.outputs.version }}
+      - name: write .npmrc
+        if: needs.context.outputs.environment == 'production'
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN
+          EOF
+      - name: pnpm release
+        if: needs.context.outputs.environment == 'production'
+        run: |
+          pnpm run release -- ${{ needs.context.outputs.version }}
       - name: github release
         if: needs.context.outputs.environment == 'production'
         run: |
