@@ -5,7 +5,7 @@ language objects sorted by quality.
 
 ## Installation
 
-`npm install @escpace/accept-language-parser`
+`npm install @escapace/accept-language-parser`
 
 ## API
 
