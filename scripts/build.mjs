@@ -17,6 +17,7 @@ await build({
   bundle: true,
   entryPoints: ['src/index.ts'],
   external: ['esbuild', ...external],
+  splitting: true,
   format: 'esm',
   logLevel: 'info',
   outExtension: { '.js': '.mjs' },
@@ -24,6 +25,7 @@ await build({
   outdir,
   platform: 'neutral',
   sourcemap: true,
+  minifySyntax: true,
   target,
   tsconfig: path.join(cwd, 'tsconfig-build.json')
 })
