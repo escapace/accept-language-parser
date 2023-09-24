@@ -2,7 +2,10 @@
   "name": "@escapace/accept-language-parser",
   "description": "",
   "version": "1.0.0",
-  "author": "escapace <opensource@escapace.com>",
+  "author": {
+    "name": "escapace",
+    "email": "opensource@escapace.com"
+  },
   "bugs": "https://github.com/escapace/accept-language-parser/issues",
   "devDependencies": {
     "@commitlint/cli": "17.7.1",
@@ -35,8 +38,8 @@
     "typescript": "5.2.2"
   },
   "engines": {
-    "node": ">= 18.18.0",
-    "pnpm": ">= 8.7.6"
+    "node": ">=18.18.0",
+    "pnpm": ">=8.7.6"
   },
   "exports": {
     ".": {
@@ -52,7 +55,7 @@
   "license": "MPL-2.0",
   "module": "lib/esm/index.mjs",
   "private": false,
-  "repository": "https://github.com/escapace/accept-language-parser.git",
+  "repository": "escapace/accept-language-parser.git",
   "scripts": {
     "build": "node ./scripts/build.mjs",
     "lint": "ls-lint && eslint 'src/**/*.{js,mjs,cjs,ts,mts,cts}'",
