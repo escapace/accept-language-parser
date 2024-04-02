@@ -59,7 +59,7 @@
   "scripts": {
     "build": "node ./scripts/build.mjs",
     "lint": "ls-lint && eslint 'src/**/*.{js,mjs,cjs,ts,mts,cts}'",
-    "prepare": "is-ci || husky install",
+    "prepare": "is-ci || husky",
     "test": "node ./scripts/test.mjs && c8 mocha --enable-source-maps 'lib/tests/**/*.spec.js'",
     "typecheck": "tsc --noEmit"
   },
