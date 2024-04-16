@@ -7,12 +7,12 @@ export interface Options {
 
 export interface ParseResult {
   code: string
-  script: string | undefined
-  region: string | undefined
   quality: number
+  region: string | undefined
+  script: string | undefined
 }
 
-const regex = /((([a-zA-Z]+(-[a-zA-Z0-9]+){0,2})|\*)(;q=[0-1](\.[0-9]+)?)?)*/g
+const regex = /((([A-Za-z]+(-[\dA-Za-z]+){0,2})|\*)(;q=[01](\.\d+)?)?)*/g
 
 function isString(s: unknown): s is string {
   return typeof s === 'string'
@@ -32,7 +32,7 @@ export function parse(
     strings
       .map((m) => {
         if (m.length === 0) {
-          return undefined
+          return
         }
 
         const bits = m.split(';')
@@ -44,12 +44,12 @@ export function parse(
 
         return {
           code: ietf[0],
-          script,
-          region,
           quality:
             isString(bits[1]) && bits[1].length !== 0
               ? parseFloat(bits[1].split('=')[1])
-              : 1.0
+              : 1,
+          region,
+          script
         }
       })
       .filter((r) => r !== undefined) as ParseResult[]
@@ -61,17 +61,17 @@ export function parse(
 // zh-HK = Traditional script with Cantonese grammar = Chinese as written in Hong Kong
 
 const newLocales: Record<string, string> = {
+  'zh-chs': 'zh-Hans',
   // https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/dd997383(v=vs.100)
   'zh-cht': 'zh-Hant',
-  'zh-chs': 'zh-Hans',
 
-  'zh-tw': 'zh-Hant-TW',
+  'zh-cn': 'zh-Hans-CN',
   'zh-hk': 'zh-Hant-HK',
   'zh-mo': 'zh-Hant-MO',
 
   // https://gist.github.com/amake/0ac7724681ac1c178c6f95a5b09f03ce
   'zh-sg': 'zh-Hans-SG',
-  'zh-cn': 'zh-Hans-CN'
+  'zh-tw': 'zh-Hant-TW'
 }
 
 function mapLocales(locale: string): string {
@@ -92,7 +92,7 @@ export function pick<T extends string>(
     return undefined
   }
 
-  const _options = { mapLocales, loose: false, ...options }
+  const _options = { loose: false, mapLocales, ...options }
 
   const parsed = parse(acceptLanguage, _options.mapLocales)
 
@@ -105,20 +105,20 @@ export function pick<T extends string>(
 
     return {
       code: bits[0],
-      script,
-      region
+      region,
+      script
     }
   })
 
   // eslint-disable-next-line @typescript-eslint/prefer-for-of
-  for (let i = 0; i < parsed.length; i++) {
-    const lang = parsed[i]
+  for (let index = 0; index < parsed.length; index++) {
+    const lang = parsed[index]
     const langCode = lang.code?.toLowerCase()
     const langRegion = lang.region?.toLowerCase()
     const langScript = lang.script?.toLowerCase()
 
-    for (let j = 0; j < supported.length; j++) {
-      const value = supported[j]
+    for (let index = 0; index < supported.length; index++) {
+      const value = supported[index]
 
       if (
         langCode === value.code?.toLowerCase() &&
@@ -129,7 +129,7 @@ export function pick<T extends string>(
           langRegion === undefined ||
           langRegion === value.region?.toLowerCase())
       ) {
-        return languages[j]
+        return languages[index]
       }
     }
   }
