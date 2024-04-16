@@ -1,5 +1,5 @@
-import { parse, pick, ParseResult } from './index.js'
 import { assert } from 'chai'
+import { ParseResult, parse, pick } from './index.js'
 
 const assertResult = function (
   expected: Partial<ParseResult>,
@@ -28,12 +28,12 @@ describe('accept-language#parse()', function () {
   it('should correctly parse the language with quality', function () {
     const result = parse('en-GB;q=0.8')
 
-    assertResult({ code: 'en', region: 'GB', quality: 0.8 }, result[0])
+    assertResult({ code: 'en', quality: 0.8, region: 'GB' }, result[0])
   })
 
   it('should correctly parse the language without quality (default 1)', function () {
     const result = parse('en-GB')
-    assertResult({ code: 'en', region: 'GB', quality: 1.0 }, result[0])
+    assertResult({ code: 'en', quality: 1, region: 'GB' }, result[0])
   })
 
   it('should correctly parse the language without region', function () {
@@ -44,48 +44,48 @@ describe('accept-language#parse()', function () {
   // This needs to be changed to preserve the full code.
   it('should ignore extra characters in the region code', function () {
     const result = parse('az-AZ')
-    assertResult({ code: 'az', region: 'AZ', quality: 1.0 }, result[0])
+    assertResult({ code: 'az', quality: 1, region: 'AZ' }, result[0])
   })
 
   it('should correctly parse a multi-language set', function () {
     const result = parse('fr-CA,fr;q=0.8')
-    assertResult({ code: 'fr', region: 'CA', quality: 1.0 }, result[0])
+    assertResult({ code: 'fr', quality: 1, region: 'CA' }, result[0])
     assertResult({ code: 'fr', quality: 0.8 }, result[1])
   })
 
   it('should correctly parse a wildcard', function () {
     const result = parse('fr-CA,*;q=0.8')
-    assertResult({ code: 'fr', region: 'CA', quality: 1.0 }, result[0])
+    assertResult({ code: 'fr', quality: 1, region: 'CA' }, result[0])
     assertResult({ code: '*', quality: 0.8 }, result[1])
   })
 
   it('should correctly parse a region with numbers', function () {
     const result = parse('fr-150')
-    assertResult({ code: 'fr', region: '150', quality: 1.0 }, result[0])
+    assertResult({ code: 'fr', quality: 1, region: '150' }, result[0])
   })
 
   it('should correctly parse complex set', function () {
     const result = parse('fr-CA,fr;q=0.8,en-US;q=0.6,en;q=0.4,*;q=0.1')
-    assertResult({ code: 'fr', region: 'CA', quality: 1.0 }, result[0])
+    assertResult({ code: 'fr', quality: 1, region: 'CA' }, result[0])
     assertResult({ code: 'fr', quality: 0.8 }, result[1])
-    assertResult({ code: 'en', region: 'US', quality: 0.6 }, result[2])
+    assertResult({ code: 'en', quality: 0.6, region: 'US' }, result[2])
     assertResult({ code: 'en', quality: 0.4 }, result[3])
     assertResult({ code: '*', quality: 0.1 }, result[4])
   })
 
   it('should cope with random whitespace', function () {
     const result = parse('fr-CA, fr;q=0.8,  en-US;q=0.6,en;q=0.4,    *;q=0.1')
-    assertResult({ code: 'fr', region: 'CA', quality: 1.0 }, result[0])
+    assertResult({ code: 'fr', quality: 1, region: 'CA' }, result[0])
     assertResult({ code: 'fr', quality: 0.8 }, result[1])
-    assertResult({ code: 'en', region: 'US', quality: 0.6 }, result[2])
+    assertResult({ code: 'en', quality: 0.6, region: 'US' }, result[2])
     assertResult({ code: 'en', quality: 0.4 }, result[3])
     assertResult({ code: '*', quality: 0.1 }, result[4])
   })
 
   it('should sort based on quality value', function () {
     const result = parse('fr-CA,fr;q=0.2,en-US;q=0.6,en;q=0.4,*;q=0.5')
-    assertResult({ code: 'fr', region: 'CA', quality: 1.0 }, result[0])
-    assertResult({ code: 'en', region: 'US', quality: 0.6 }, result[1])
+    assertResult({ code: 'fr', quality: 1, region: 'CA' }, result[0])
+    assertResult({ code: 'en', quality: 0.6, region: 'US' }, result[1])
     assertResult({ code: '*', quality: 0.5 }, result[2])
     assertResult({ code: 'en', quality: 0.4 }, result[3])
     assertResult({ code: 'fr', quality: 0.2 }, result[4])
@@ -94,7 +94,7 @@ describe('accept-language#parse()', function () {
   it('should correctly identify script', function () {
     const result = parse('zh-Hant-cn')
     assertResult(
-      { code: 'zh', script: 'Hant', region: 'cn', quality: 1.0 },
+      { code: 'zh', quality: 1, region: 'cn', script: 'Hant' },
       result[0]
     )
   })
@@ -102,10 +102,10 @@ describe('accept-language#parse()', function () {
   it('should cope with script and a quality value', function () {
     const result = parse('zh-Hant-cn;q=1, zh-cn;q=0.6, zh;q=0.4')
     assertResult(
-      { code: 'zh', script: 'Hant', region: 'cn', quality: 1.0 },
+      { code: 'zh', quality: 1, region: 'cn', script: 'Hant' },
       result[0]
     )
-    assertResult({ code: 'zh', region: 'cn', quality: 0.6 }, result[1])
+    assertResult({ code: 'zh', quality: 0.6, region: 'cn' }, result[1])
     assertResult({ code: 'zh', quality: 0.4 }, result[2])
   })
 })
@@ -322,8 +322,8 @@ describe('readme examples', function () {
   it('parse()', function () {
     const result = parse('en-GB,en;q=0.8')
     assert.deepEqual(result, [
-      { code: 'en', script: undefined, region: 'GB', quality: 1 },
-      { code: 'en', script: undefined, region: undefined, quality: 0.8 }
+      { code: 'en', quality: 1, region: 'GB', script: undefined },
+      { code: 'en', quality: 0.8, region: undefined, script: undefined }
     ])
   })
 
