@@ -1,5 +1,5 @@
 import { assert } from 'chai'
-import { ParseResult, parse, pick } from './index.js'
+import { type ParseResult, parse, pick } from './index.js'
 
 const assertResult = function (
   expected: Partial<ParseResult>,
