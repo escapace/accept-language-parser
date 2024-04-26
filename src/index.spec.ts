@@ -1,10 +1,7 @@
-import { assert } from 'chai'
-import { type ParseResult, parse, pick } from './index.js'
+import { assert, describe, it } from 'vitest'
+import { parse, pick, type ParseResult } from './index.js'
 
-const assertResult = function (
-  expected: Partial<ParseResult>,
-  actual: Partial<ParseResult>
-): void {
+const assertResult = function (expected: Partial<ParseResult>, actual: Partial<ParseResult>): void {
   assert.equal(actual.code, expected.code)
 
   if (actual.script !== undefined || expected.script !== undefined) {
@@ -93,18 +90,12 @@ describe('accept-language#parse()', function () {
 
   it('should correctly identify script', function () {
     const result = parse('zh-Hant-cn')
-    assertResult(
-      { code: 'zh', quality: 1, region: 'cn', script: 'Hant' },
-      result[0]
-    )
+    assertResult({ code: 'zh', quality: 1, region: 'cn', script: 'Hant' }, result[0])
   })
 
   it('should cope with script and a quality value', function () {
     const result = parse('zh-Hant-cn;q=1, zh-cn;q=0.6, zh;q=0.4')
-    assertResult(
-      { code: 'zh', quality: 1, region: 'cn', script: 'Hant' },
-      result[0]
-    )
+    assertResult({ code: 'zh', quality: 1, region: 'cn', script: 'Hant' }, result[0])
     assertResult({ code: 'zh', quality: 0.6, region: 'cn' }, result[1])
     assertResult({ code: 'zh', quality: 0.4 }, result[2])
   })
@@ -121,17 +112,14 @@ describe('accept-language#pick()', function () {
     const result = pick(
       // @ts-expect-error test incorrect type
       [true],
-      'fr-CA,fr;q=0.2,en-US;q=0.6,en;q=0.4,*;q=0.5'
+      'fr-CA,fr;q=0.2,en-US;q=0.6,en;q=0.4,*;q=0.5',
     )
 
     assert.equal(result, undefined)
   })
 
   it('should pick a specific regional language', function () {
-    const result = pick(
-      ['en-US', 'fr-CA'],
-      'fr-CA,fr;q=0.2,en-US;q=0.6,en;q=0.4,*;q=0.5'
-    )
+    const result = pick(['en-US', 'fr-CA'], 'fr-CA,fr;q=0.2,en-US;q=0.6,en;q=0.4,*;q=0.5')
     assert.equal(result, 'fr-CA')
   })
 
@@ -145,18 +133,12 @@ describe('accept-language#pick()', function () {
   // })
 
   it('should pick a specific script (if specified)', function () {
-    const result = pick(
-      ['zh-Hant-cn', 'zh-cn'],
-      'zh-Hant-cn,zh-cn;q=0.6,zh;q=0.4'
-    )
+    const result = pick(['zh-Hant-cn', 'zh-cn'], 'zh-Hant-cn,zh-cn;q=0.6,zh;q=0.4')
     assert.equal(result, 'zh-Hant-cn')
   })
 
   it('should pick proper language regardless of casing', function () {
-    const result = pick(
-      ['eN-Us', 'Fr-cA'],
-      'fR-Ca,fr;q=0.2,en-US;q=0.6,en;q=0.4,*;q=0.5'
-    )
+    const result = pick(['eN-Us', 'Fr-cA'], 'fR-Ca,fr;q=0.2,en-US;q=0.6,en;q=0.4,*;q=0.5')
 
     assert.equal(result, 'Fr-cA')
   })
@@ -172,10 +154,7 @@ describe('accept-language#pick()', function () {
   })
 
   it('should return null if no matches are found', function () {
-    const result = pick(
-      ['ko-KR'],
-      'fr-CA,fr;q=0.8,en-US;q=0.6,en;q=0.4,*;q=0.1'
-    )
+    const result = pick(['ko-KR'], 'fr-CA,fr;q=0.8,en-US;q=0.6,en;q=0.4,*;q=0.1')
     assert.equal(result, null)
   })
 
@@ -209,70 +188,55 @@ describe('accept-language#pick()', function () {
 
   it('selects the first matching language in loose mode, even when supported language is more restrictive', function () {
     const result = pick(['en-US', 'en', 'pl'], 'en;q=0.6', {
-      loose: true
+      loose: true,
     })
     assert.equal(result, 'en-US')
   })
 
   it('selects the first matching language in loose mode, even when the accepted language is more restrictive', function () {
     const result = pick(['en', 'en-US', 'pl'], 'en-US;q=0.6', {
-      loose: true
+      loose: true,
     })
     assert.equal(result, 'en')
   })
 
   it('quality is more important than order when matching loosely', function () {
-    const result = pick(
-      ['en', 'fr'],
-      'fr-CA,fr;q=0.8,en-US;q=0.6,en;q=0.4,*;q=0.1',
-      { loose: true }
-    )
-    const result2 = pick(
-      ['fr', 'en'],
-      'fr-CA,fr;q=0.8,en-US;q=0.6,en;q=0.4,*;q=0.1',
-      { loose: true }
-    )
+    const result = pick(['en', 'fr'], 'fr-CA,fr;q=0.8,en-US;q=0.6,en;q=0.4,*;q=0.1', {
+      loose: true,
+    })
+    const result2 = pick(['fr', 'en'], 'fr-CA,fr;q=0.8,en-US;q=0.6,en;q=0.4,*;q=0.1', {
+      loose: true,
+    })
     assert.equal(result, result2)
   })
 
   it('quality is more important than order when matching loosely2', function () {
-    const result = pick(
-      ['en', 'fr'],
-      'fr-CA,en-US;q=0.7,fr;q=0.6,en;q=0.4,*;q=0.1',
-      { loose: true }
-    )
-    const result2 = pick(
-      ['fr', 'en'],
-      'fr-CA,en-US;q=0.7,fr;q=0.6,en;q=0.4,*;q=0.1',
-      { loose: true }
-    )
+    const result = pick(['en', 'fr'], 'fr-CA,en-US;q=0.7,fr;q=0.6,en;q=0.4,*;q=0.1', {
+      loose: true,
+    })
+    const result2 = pick(['fr', 'en'], 'fr-CA,en-US;q=0.7,fr;q=0.6,en;q=0.4,*;q=0.1', {
+      loose: true,
+    })
     assert.equal(result, result2)
   })
 
   it('quality is more important than order when matching loosely3', function () {
     const result = pick(['en', 'fr'], 'en-US;q=0.7,fr;q=0.6,en;q=0.4,*;q=0.1', {
-      loose: true
+      loose: true,
     })
-    const result2 = pick(
-      ['fr', 'en'],
-      'en-US;q=0.7,fr;q=0.6,en;q=0.4,*;q=0.1',
-      { loose: true }
-    )
+    const result2 = pick(['fr', 'en'], 'en-US;q=0.7,fr;q=0.6,en;q=0.4,*;q=0.1', { loose: true })
     assert.equal(result, result2)
   })
 
   it('should map zh-CHT => zh-Hant: Traditional Chinese', function () {
-    const result = pick(
-      ['zh-Hans', 'zh-Hant-CN', 'zh-Hant'],
-      'zh-CHT,zh-cn;q=0.6,zh;q=0.4'
-    )
+    const result = pick(['zh-Hans', 'zh-Hant-CN', 'zh-Hant'], 'zh-CHT,zh-cn;q=0.6,zh;q=0.4')
     assert.equal(result, 'zh-Hant')
   })
 
   it('should map zh-TW => zh-Hant-TW: Traditional Chinese / Taiwan', function () {
     const result = pick(
       ['zh-Hans-CN', 'zh-Hans-SG', 'zh-Hans', 'zh-Hant-TW'],
-      'zh-TW;q=0.6,zh;q=0.4'
+      'zh-TW;q=0.6,zh;q=0.4',
     )
     assert.equal(result, 'zh-Hant-TW')
   })
@@ -280,7 +244,7 @@ describe('accept-language#pick()', function () {
   it('should map zh-HK => zh-Hant-HK: Traditional Chinese / Hong Kong', function () {
     const result = pick(
       ['zh-Hans-CN', 'zh-Hans-SG', 'zh-Hans', 'zh-Hant-HK', 'zh-Hant-TW'],
-      'zh-HK;q=0.6,zh;q=0.4'
+      'zh-HK;q=0.6,zh;q=0.4',
     )
     assert.equal(result, 'zh-Hant-HK')
   })
@@ -288,32 +252,23 @@ describe('accept-language#pick()', function () {
   it('should map zh-MO => zh-Hant-MO: Traditional Chinese / Macau', function () {
     const result = pick(
       ['zh-Hans-CN', 'zh-Hans-SG', 'zh-Hans', 'zh-Hant-TW', 'zh-Hant-MO'],
-      'zh-MO;q=0.8,zh-TW;q=0.6,zh;q=0.4'
+      'zh-MO;q=0.8,zh-TW;q=0.6,zh;q=0.4',
     )
     assert.equal(result, 'zh-Hant-MO')
   })
 
   it('should map zh-CHS to zh-Hans: Simplified Chinese', function () {
-    const result = pick(
-      ['zh-Hans-CN', 'zh-Hans', 'zh-Hans'],
-      'zh-CHS,zh-cn;q=0.6,zh;q=0.4'
-    )
+    const result = pick(['zh-Hans-CN', 'zh-Hans', 'zh-Hans'], 'zh-CHS,zh-cn;q=0.6,zh;q=0.4')
     assert.equal(result, 'zh-Hans')
   })
 
   it('should map zh-cn => zh-Hans-CN: Simplied Chinese / China', function () {
-    const result = pick(
-      ['zh-Hans-CN', 'zh-Hans-SG', 'zh-Hans', 'zh-Hant'],
-      'zh-cn;q=0.6,zh;q=0.4'
-    )
+    const result = pick(['zh-Hans-CN', 'zh-Hans-SG', 'zh-Hans', 'zh-Hant'], 'zh-cn;q=0.6,zh;q=0.4')
     assert.equal(result, 'zh-Hans-CN')
   })
 
   it('should map zh-sg => zh-Hans-SG: Simplied Chinese / Singapore', function () {
-    const result = pick(
-      ['zh-Hans-CN', 'zh-Hans-SG', 'zh-Hans', 'zh-Hant'],
-      'zh-sg;q=0.6,zh;q=0.4'
-    )
+    const result = pick(['zh-Hans-CN', 'zh-Hans-SG', 'zh-Hans', 'zh-Hant'], 'zh-sg;q=0.6,zh;q=0.4')
     assert.equal(result, 'zh-Hans-SG')
   })
 })
@@ -323,24 +278,17 @@ describe('readme examples', function () {
     const result = parse('en-GB,en;q=0.8')
     assert.deepEqual(result, [
       { code: 'en', quality: 1, region: 'GB', script: undefined },
-      { code: 'en', quality: 0.8, region: undefined, script: undefined }
+      { code: 'en', quality: 0.8, region: undefined, script: undefined },
     ])
   })
 
   it('pick() strict', function () {
-    const result = pick(
-      ['fr-CA', 'fr-FR', 'fr'],
-      'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8'
-    )
+    const result = pick(['fr-CA', 'fr-FR', 'fr'], 'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8')
     assert.equal(result, 'fr-CA')
   })
 
   it('pick() loose', function () {
-    const result = pick(
-      ['fr', 'en'],
-      'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8',
-      { loose: true }
-    )
+    const result = pick(['fr', 'en'], 'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8', { loose: true })
     assert.equal(result, 'en')
   })
 })
