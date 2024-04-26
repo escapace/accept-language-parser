@@ -1,6 +1,6 @@
 {
   "all": true,
-  "reporter": ["json", "text"],
+  "branches": 100,
   "exclude": [
     "**/*.spec.?(m)@(j|t)s?(x)",
     "**/eslint.config.mjs",
@@ -9,8 +9,8 @@
     "scripts"
   ],
   "excludeAfterRemap": true,
-  "branches": 100,
   "functions": 100,
-  "statements": 100,
-  "lines": 100
+  "lines": 100,
+  "reporter": ["json", "text"],
+  "statements": 100
 }

@@ -12,16 +12,14 @@ export interface ParseResult {
   script: string | undefined
 }
 
+// eslint-disable-next-line regexp/no-unused-capturing-group, regexp/no-misleading-capturing-group
 const regex = /((([A-Za-z]+(-[\dA-Za-z]+){0,2})|\*)(;q=[01](\.\d+)?)?)*/g
 
 function isString(s: unknown): s is string {
   return typeof s === 'string'
 }
 
-export function parse(
-  al: string,
-  mapLocale: MapLocales = (x) => x
-): ParseResult[] {
+export function parse(al: string, mapLocale: MapLocales = (x) => x): ParseResult[] {
   const strings = (al.length > 0 ? al : '').match(regex)
 
   if (strings === null) {
@@ -45,11 +43,9 @@ export function parse(
         return {
           code: ietf[0],
           quality:
-            isString(bits[1]) && bits[1].length !== 0
-              ? parseFloat(bits[1].split('=')[1])
-              : 1,
+            isString(bits[1]) && bits[1].length !== 0 ? parseFloat(bits[1].split('=')[1]) : 1,
           region,
-          script
+          script,
         }
       })
       .filter((r) => r !== undefined) as ParseResult[]
@@ -71,7 +67,7 @@ const newLocales: Record<string, string> = {
 
   // https://gist.github.com/amake/0ac7724681ac1c178c6f95a5b09f03ce
   'zh-sg': 'zh-Hans-SG',
-  'zh-tw': 'zh-Hant-TW'
+  'zh-tw': 'zh-Hant-TW',
 }
 
 function mapLocales(locale: string): string {
@@ -84,7 +80,7 @@ function mapLocales(locale: string): string {
 export function pick<T extends string>(
   languages: T[],
   acceptLanguage: string,
-  options: Partial<Options> = {}
+  options: Partial<Options> = {},
 ): T | undefined {
   const langs = languages.filter((string) => isString(string))
 
@@ -106,11 +102,11 @@ export function pick<T extends string>(
     return {
       code: bits[0],
       region,
-      script
+      script,
     }
   })
 
-  // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  // eslint-disable-next-line typescript/prefer-for-of
   for (let index = 0; index < parsed.length; index++) {
     const lang = parsed[index]
     const langCode = lang.code?.toLowerCase()
@@ -125,9 +121,7 @@ export function pick<T extends string>(
         (_options.loose ||
           langScript === undefined ||
           langScript === value.script?.toLowerCase()) &&
-        (_options.loose ||
-          langRegion === undefined ||
-          langRegion === value.region?.toLowerCase())
+        (_options.loose || langRegion === undefined || langRegion === value.region?.toLowerCase())
       ) {
         return languages[index]
       }
