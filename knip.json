@@ -6,5 +6,8 @@
     "scripts/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}",
     "eslint.config.mjs"
   ],
-  "ignoreDependencies": ["@commitlint/cli", "eslint-config-escapace", "prettier", "syncpack"]
+  "ignoreDependencies": ["@commitlint/cli", "prettier", "syncpack"],
+  "lefthook": {
+    "config": []
+  }
 }
