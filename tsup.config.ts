@@ -14,6 +14,11 @@ export default defineConfig({
     )
   },
   outDir: 'lib/esm',
+  outExtension() {
+    return {
+      js: '.mjs',
+    }
+  },
   sourcemap: true,
   splitting: true,
   target: [`node${engines.node.replace(/^\D+/, '')}`] as Options['target'],
