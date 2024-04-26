@@ -47,13 +47,14 @@ pre-commit:
       stage_fixed: true
 
     eslint:
-      exclude: '(^|/)(package)\.jsonb$'
+      exclude: '(^|/)pnpm-lock.yaml$'
       glob: '*.{js,mjs,cjs,ts,mts,cts,yml,yaml,json}'
       priority: 6
       run: pnpm exec eslint --fix {staged_files}
       stage_fixed: true
 
     prettier:
+      exclude: '(^|/)pnpm-lock.yaml$'
       glob: '*.{js,mjs,cjs,ts,mts,cts,yml,yaml,json,md}'
       priority: 7
       run: pnpm exec prettier --write {staged_files}
