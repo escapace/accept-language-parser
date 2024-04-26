@@ -48,6 +48,7 @@ pre-commit:
       stage_fixed: true
 
     eslint:
+      exclude: '(^|/)(package)\.jsonb$'
       glob: '*.{js,mjs,cjs,ts,mts,cts,yml,yaml,json}'
       priority: 6
       run: pnpm exec eslint --fix {staged_files}
