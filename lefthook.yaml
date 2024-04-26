@@ -17,7 +17,6 @@ pre-commit:
       glob: '{package.json,**/package.json,pnpm-lock.yaml}'
       priority: 1
       run: pnpm exec knip
-      skip: true
 
     ls-lint:
       priority: 1
