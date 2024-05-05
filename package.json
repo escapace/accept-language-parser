@@ -12,36 +12,35 @@
     "@commitlint/config-conventional": "19.2.2",
     "@escapace/pnpm-pack": "0.2.0",
     "@ls-lint/ls-lint": "2.2.3",
-    "@types/node": "20.12.7",
     "@vitest/coverage-v8": "1.5.2",
     "eslint": "9.1.1",
-    "eslint-config-escapace": "5.0.5",
+    "eslint-config-escapace": "5.0.9",
+    "esroll": "0.1.0",
     "knip": "5.11.0",
     "lefthook": "1.6.10",
     "prettier": "3.2.5",
     "prettier-config-escapace": "1.2.0",
     "syncpack": "12.3.2",
-    "tsup": "8.0.2",
+    "tsx": "4.9.1",
     "typescript": "5.4.5",
     "vitest": "1.5.2"
   },
   "engines": {
-    "node": ">=20.12.0",
     "pnpm": ">=9.0.6"
   },
   "exports": {
     ".": {
       "types": "./lib/types/index.d.ts",
-      "import": "./lib/esm/index.mjs"
+      "import": "./lib/neutral/index.js"
     }
   },
   "files": [
-    "lib/esm",
+    "lib/neutral",
     "lib/types"
   ],
-  "homepage": "https://github.com/escapace/accept-language-parser",
+  "homepage": "https://github.com/escapace/accept-language-parser#readme",
   "license": "MPL-2.0",
-  "module": "lib/esm/index.mjs",
+  "module": "lib/neutral/index.js",
   "private": false,
   "publishConfig": {
     "access": "public",
@@ -49,7 +48,7 @@
   },
   "repository": "escapace/accept-language-parser",
   "scripts": {
-    "build": "tsup",
+    "build": "tsx scripts/build.ts",
     "lint": "ls-lint --config .ls-lint.yaml && knip && eslint",
     "pack": "pnpm-pack package --pack-destination lib",
     "prepare": "lefthook install",
