@@ -10,11 +10,11 @@
   "devDependencies": {
     "@commitlint/cli": "19.3.0",
     "@commitlint/config-conventional": "19.2.2",
-    "@escapace/pnpm-pack": "0.5.0",
+    "@escapace/pnpm-pack": "0.5.2",
     "@ls-lint/ls-lint": "2.2.3",
     "@vitest/coverage-v8": "1.5.2",
-    "eslint": "9.1.1",
-    "eslint-config-escapace": "5.1.2",
+    "eslint": "9.6.0",
+    "eslint-config-escapace": "5.1.3",
     "esroll": "0.1.1",
     "knip": "5.13.0",
     "lefthook": "1.6.10",
@@ -26,7 +26,7 @@
     "vitest": "1.5.2"
   },
   "engines": {
-    "pnpm": ">=9.0.6"
+    "pnpm": ">=9.4.0"
   },
   "exports": {
     ".": {
@@ -49,10 +49,12 @@
   "repository": "escapace/accept-language-parser",
   "scripts": {
     "build": "tsx scripts/build.ts",
-    "format": "eslint --no-warn-ignored --fix && prettier -uw .",
+    "format": "syncpack format && eslint --no-warn-ignored --fix && prettier -uw .",
     "lint": "ls-lint --config .ls-lint.yaml && knip && eslint",
+    "ls-lint": "ls-lint --config .ls-lint.yaml",
     "pack": "pnpm-pack package --pack-destination lib",
     "prepare": "lefthook install",
+    "syncpack": "syncpack fix-mismatches && syncpack-set-semver-ranges && syncpack format",
     "test": "vitest --no-watch --coverage",
     "typecheck": "tsc --noEmit"
   },
