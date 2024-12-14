@@ -26,13 +26,13 @@ Output will be:
   {
     code: 'en',
     region: 'GB',
-    quality: 1.0
+    quality: 1.0,
   },
   {
     code: 'en',
     region: undefined,
-    quality: 0.8
-  }
+    quality: 0.8,
+  },
 ]
 ```
 
@@ -43,10 +43,7 @@ Output is always sorted in quality order from highest -> lowest. As per the HTTP
 ```js
 import { pick } from '@escapace/accept-language-parser'
 
-const language = pick(
-  ['fr-CA', 'fr-FR', 'fr'],
-  'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8'
-)
+const language = pick(['fr-CA', 'fr-FR', 'fr'], 'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8')
 
 console.log(language)
 ```
@@ -63,7 +60,7 @@ For example:
 
 ```js
 pick(['fr', 'en'], 'en-GB,en-US;q=0.9,fr-CA;q=0.7,en;q=0.8', {
-  loose: true
+  loose: true,
 })
 ```
 
