@@ -46,6 +46,12 @@
   "homepage": "https://github.com/escapace/accept-language-parser#readme",
   "license": "MPL-2.0",
   "module": "lib/neutral/index.js",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "lefthook",
+      "esbuild"
+    ]
+  },
   "private": false,
   "publishConfig": {
     "access": "public",
