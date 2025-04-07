@@ -18,7 +18,7 @@
     "@ls-lint/ls-lint": "2.2.3",
     "@vitest/coverage-v8": "3.0.9",
     "eslint": "9.22.0",
-    "eslint-config-escapace": "5.5.1",
+    "eslint-config-escapace": "5.5.2",
     "esroll": "0.4.2",
     "hono": "4.7.5",
     "knip": "5.46.0",
