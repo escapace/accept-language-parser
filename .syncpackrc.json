@@ -18,21 +18,15 @@
   "semverGroups": [
     {
       "dependencies": ["**"],
-      "dependencyTypes": ["engines", "peer"],
+      "dependencyTypes": ["engines", "peer", "prod"],
       "packages": ["**"],
-      "range": ">="
+      "range": "^"
     },
     {
       "dependencies": ["**"],
       "dependencyTypes": ["dev"],
       "packages": ["**"],
       "range": ""
-    },
-    {
-      "dependencies": ["**"],
-      "dependencyTypes": ["prod"],
-      "packages": ["**"],
-      "range": "^"
     }
   ],
   "source": ["package.json", "packages/*/package.json"],
