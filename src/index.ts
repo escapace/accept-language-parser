@@ -47,9 +47,7 @@ const normalizeTags = (tags: string[], options: Options): string[] =>
   uniq(
     tags
       // Normalize each tag to BCP 47 canonical form (en-us → en, deprecated codes replaced)
-      .map((tag) => bcp47Normalize(tag, { forgiving: options.forgiving }))
-      // Remove any normalization failures or empty results
-      .filter((value) => typeof value === 'string' && value.trim().length !== 0),
+      .map((tag) => bcp47Normalize(tag, { forgiving: options.forgiving })),
   )
 
 /**
