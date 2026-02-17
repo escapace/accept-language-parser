@@ -1,6 +1,8 @@
 .aider*
+.firecrawl/
 .cache
 .cache/
+.claude/*.local.json
 .docusaurus
 .dynamodb/
 .env

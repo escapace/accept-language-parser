@@ -1,11 +1,11 @@
 # @escapace/accept-language-parser
 
-Parses HTTP Accept-Language header and returns matched language tags using RFC 4647 algorithms and BCP 47 normalization standards.
+Matches HTTP `Accept-Language` preferences to supported language tags with deterministic ordering, fallback, and normalized results.
 
 ## Installation
 
 ```bash
-pnpm install @escapace/accept-language-parser
+pnpm add @escapace/accept-language-parser
 ```
 
 ## Usage
@@ -13,70 +13,145 @@ pnpm install @escapace/accept-language-parser
 ```typescript
 import { pick } from '@escapace/accept-language-parser'
 
-// Basic language matching with quality scores
-pick('en-US;q=0.6', ['en', 'pl'])
-// Returns: ['en']
+// Basic mode returns all compatible matches in output order.
+pick('de-CH,de;q=0.9,en;q=0.8', ['de', 'de-AT', 'en'])
+// => ['de', 'de-AT', 'en']
 
-// Lookup algorithm for single best match
-pick('en-US,en;q=0.9,fr;q=0.8', ['en-GB', 'en', 'fr'], { type: 'lookup' })
-// Returns: ['en']
-
-// Empty result when no matches found
-pick('', ['en'])
-// Returns: []
+// Lookup mode returns a single best match.
+pick('de-CH,de;q=0.9,en;q=0.8', ['de', 'de-AT', 'en'], { type: 'lookup' })
+// => ['de']
 ```
 
-## API
+## Behavioral guarantees
 
-### `pick(acceptLanguage, tags, options?)`
+- Return type is always `string[]`.
+- Returned tags are normalized supported tags, not raw input strings.
+- Ranges with `q=0` are excluded before matching.
+- Duplicate, empty, and unusable values are removed before matching.
+- Default behavior is strict normalization with `basic` matching:
+  - `forgiving: false`
+  - `type: 'basic'`
 
-Parses an Accept-Language header and returns matching language tags in preference order.
+## Choosing a matching mode
 
-**Parameters:**
+| Need                                                   | Mode     |
+| ------------------------------------------------------ | -------- |
+| Candidate set for additional ranking or fallback logic | `basic`  |
+| Single best match for direct locale selection          | `lookup` |
 
-- `acceptLanguage` (string): The Accept-Language header value
-- `tags` (string[]): Array of supported BCP 47 language tags
-- `options` (Options, optional): Configuration options
+## Quality, strictness, and ordering examples
 
-**Returns:** `string[]` - Array of matched language tags ordered by preference
+```typescript
+import { pick } from '@escapace/accept-language-parser'
 
-**Options:**
+// q=0 means "not acceptable" and is excluded.
+pick('en;q=0,fr;q=0.8', ['en', 'fr'])
+// => ['fr']
 
-- `forgiving` (boolean, default: false): Handle malformed language tags gracefully
-- `type` ('basic' | 'lookup', default: 'basic'): Language matching algorithm
+// In basic mode, wildcard can match remaining acceptable tags.
+pick('en;q=0.8,*;q=0.1', ['en', 'de', 'it'])
+// => ['en', 'de', 'it']
 
-**Language Matching Algorithms:**
+// Normalization can collapse supported tags before matching.
+pick('en-US;q=1', ['en-US', 'en'])
+// => ['en']
 
-- `'basic'`: Implements RFC 4647 Section 3.3.1 Basic Filtering. Returns all matching language tags using prefix matching. More specific tags match less specific ranges (e.g., 'en' range matches 'en-GB' tag). Processes all available language tags and returns every tag that matches the Accept-Language preferences.
+// Strict mode excludes malformed language values.
+pick('en_US,fr;q=0.8', ['en', 'fr'])
+// => ['fr']
 
-- `'lookup'`: Implements RFC 4647 Section 3.4 Lookup matching. Returns the single best matching language tag, prioritizing more specific matches. Finds and returns only the most appropriate match from the available options, following language tag hierarchy and preference order.
+// Forgiving mode can recover malformed language values.
+pick('en_US,fr;q=0.8', ['en', 'fr'], { forgiving: true })
+// => ['en', 'fr']
 
-## Accept-Language Header Format
-
-The Accept-Language header specifies language preferences using quality scores:
-
+// Tie behavior: when quality values are equal, earlier header entries are prioritized.
+pick('fr;q=0.8,en;q=0.8', ['en', 'fr'])
+// => ['fr', 'en']
 ```
-Accept-Language: en-US,en;q=0.9,fr;q=0.8,*;q=0.1
+
+## Cache integration example
+
+Language-varying cacheable responses should vary on `Accept-Language`.
+
+```http
+GET /content HTTP/1.1
+Accept-Language: fr-CA,fr;q=0.8,en;q=0.6
+
+HTTP/1.1 200 OK
+Content-Language: fr-CA
+Vary: Accept-Language
 ```
 
-- Languages without quality scores default to `q=1.0` (highest priority)
-- Quality scores range from 0.0 to 1.0
-- The `*` wildcard matches any language
+# API
 
-## BCP 47 Language Tags
+## function pick [↗](src/index.ts#L115-L126 'pick')
 
-Follows BCP 47 standards for language tag formatting and matching. Language tags use formats like:
+Matches an HTTP `Accept-Language` value against supported language tags.
 
-- `en` (language)
-- `en-US` (language-region)
-- `zh-Hant-CN` (language-script-region)
+```typescript
+export declare function pick(acceptLanguage: string, tags: string[], options?: Options): string[]
+```
 
-Tags are automatically normalized for consistent matching using Unicode CLDR recommendations.
+### Parameters
 
-## Credits
+| Parameter        | Type                                                          | Description                               |
+| ---------------- | ------------------------------------------------------------- | ----------------------------------------- |
+| `acceptLanguage` | <pre>string</pre>                                             | Raw `Accept-Language` header field value. |
+| `tags`           | <pre>string\[]</pre>                                          | Supported language tags.                  |
+| `options`        | <pre>[Options](#interface-options- 'interface Options')</pre> | Matching and normalization configuration. |
 
-Uses functionality from:
+### Returns
 
-- **[bcp-47-normalize](https://github.com/wooorm/bcp-47-normalize)** - BCP 47 language tag normalization and canonicalization
-- **[bcp-47-match](https://github.com/wooorm/bcp-47-match)** - RFC 4647 compliant language tag matching algorithms
-- **[Hono](https://github.com/honojs/hono)** - Accept header parsing utilities ([accept.ts](https://github.com/honojs/hono/blob/main/src/utils/accept.ts))
+Matched supported tags in output order. The result is empty when no acceptable range remains or when no supported tag matches. In `lookup` mode, the array has zero or one element.
+
+### Remarks
+
+Quality values (`q`) determine preference priority, and entries with `q=0` are excluded. Wildcard `*` is supported. Returned tags are normalized supported tags. Return type is always `string[]`.
+
+Integration code for cacheable language-varying responses should emit `Vary: Accept-Language`.
+
+## interface Options [↗](src/index.ts#L18-L52 'Options')
+
+Configuration for language matching behavior.
+
+```typescript
+export interface Options
+```
+
+### Remarks
+
+The configuration controls strictness for malformed language values and matching cardinality (candidate set versus single best tag).
+
+When options are omitted, default behavior is `forgiving: false` and `type: 'basic'`.
+
+Returned tags are normalized forms of supplied supported tags.
+
+### Options.forgiving
+
+Controls strictness when language values are malformed.
+
+```typescript
+forgiving?: boolean;
+```
+
+#### Remarks
+
+Strict mode (`false`) excludes malformed values from matching input. Forgiving mode (`true`) attempts partial recovery when possible.
+
+### Options.type
+
+Selects the matching mode used for language negotiation.
+
+```typescript
+type?: 'basic' | 'lookup';
+```
+
+#### Remarks
+
+`basic` returns zero or more compatible supported tags.
+
+`lookup` returns at most one best supported tag.
+
+In lookup mode, a wildcard-only preference does not guarantee a concrete result.
+
+Independent of mode, [pick](#function-pick-) returns `string[]`.

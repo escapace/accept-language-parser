@@ -11,5 +11,11 @@
       "platform": "neutral",
       "target": ["es2020"]
     }
+  },
+  "declaration": {
+    "declarationRollup": true,
+    "documentation": true,
+    "entryPoints": ["src/index.ts"],
+    "tsconfig": "tsconfig-build.json"
   }
 }

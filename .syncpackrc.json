@@ -17,8 +17,20 @@
   ],
   "semverGroups": [
     {
+      "dependencies": ["browserslist"],
+      "dependencyTypes": ["peer"],
+      "packages": ["**"],
+      "range": ">="
+    },
+    {
       "dependencies": ["**"],
-      "dependencyTypes": ["engines", "peer", "prod"],
+      "dependencyTypes": ["engines"],
+      "packages": ["**"],
+      "range": ">="
+    },
+    {
+      "dependencies": ["**"],
+      "dependencyTypes": ["peer", "prod"],
       "packages": ["**"],
       "range": "^"
     },

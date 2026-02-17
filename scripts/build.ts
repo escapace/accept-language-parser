@@ -1,9 +1,6 @@
 import { build, type BuildOptions } from 'esroll'
-import { exec as _exec } from 'node:child_process'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { promisify } from 'node:util'
-const exec = promisify(_exec)
 
 const dirname = path.resolve(import.meta.dirname, '../')
 process.chdir(dirname)
@@ -18,6 +15,7 @@ const constants = JSON.parse(
   await readFile(path.join(import.meta.dirname, 'constants.json'), 'utf-8'),
 ) as {
   builds: Record<string, BuildOptions>
+  declaration?: BuildOptions
 }
 
 for (const value of Object.values(constants.builds)) {
@@ -49,6 +47,9 @@ for (const value of Object.values(constants.builds)) {
   })
 }
 
-await exec(
-  'pnpm exec tsc -p ./tsconfig-build.json --emitDeclarationOnly --declarationDir lib/types',
-)
+if (constants.declaration !== undefined) {
+  await build({
+    declaration: true,
+    ...constants.declaration,
+  })
+}

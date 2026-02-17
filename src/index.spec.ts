@@ -73,12 +73,34 @@ describe('accept-language', function () {
   describe('edge cases and boundary conditions', function () {
     it('should handle quality scores at boundaries', function () {
       const result = pick('en;q=0.000,fr;q=1.000,de;q=0.001', ['en', 'fr', 'de'])
-      assert.deepEqual(result, ['fr', 'de', 'en'])
+      assert.deepEqual(result, ['fr', 'de'])
     })
 
     it('should handle whitespace variations', function () {
       const result = pick(' en-US , fr ; q = 0.8 ', ['en-US', 'fr'])
       assert.deepEqual(result, ['en', 'fr'])
+    })
+  })
+
+  describe('q=0 handling', function () {
+    it('should exclude q=0 language ranges from matching', function () {
+      const result = pick('en;q=0,fr;q=0.8', ['en', 'fr'])
+      assert.deepEqual(result, ['fr'])
+    })
+
+    it('should not allow wildcard q=0 to match remaining tags', function () {
+      const result = pick('en;q=1,*;q=0', ['en', 'fr', 'de'])
+      assert.deepEqual(result, ['en'])
+    })
+
+    it('should return empty when all ranges are q=0', function () {
+      const result = pick('en;q=0,fr;q=0', ['en', 'fr'])
+      assert.deepEqual(result, [])
+    })
+
+    it('should exclude q=0 ranges in lookup mode', function () {
+      const result = pick('en-US;q=0,en;q=0.8', ['en-US', 'en'], { type: 'lookup' })
+      assert.deepEqual(result, ['en'])
     })
   })
 
@@ -109,7 +131,7 @@ describe('accept-language', function () {
       assert.deepEqual(result, [])
     })
 
-    it('empty', function () {
+    it('empty accept-language and empty supported language', function () {
       const result = pick('', [''])
 
       assert.deepEqual(result, [])
@@ -183,7 +205,7 @@ describe('accept-language', function () {
       assert.deepEqual(result, result2)
     })
 
-    it('quality is more important than order', function () {
+    it('quality is more important than order with different q values', function () {
       const result = pick('fr-CA,en-US;q=0.7,fr;q=0.6,en;q=0.4,*;q=0.1', ['en', 'fr'])
       const result2 = pick('fr-CA,en-US;q=0.7,fr;q=0.6,en;q=0.4,*;q=0.1', ['fr', 'en'])
       assert.deepEqual(result, result2)
