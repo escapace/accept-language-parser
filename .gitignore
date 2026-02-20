@@ -1,5 +1,4 @@
 .aider*
-.firecrawl/
 .cache
 .cache/
 .claude/*.local.json
@@ -11,6 +10,7 @@
 .env.production.local
 .env.test.local
 .eslintcache
+.firecrawl/
 .fusebox/
 .grunt
 .lock-wscript
