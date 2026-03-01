@@ -22,7 +22,7 @@
     "eslint": "9.32.0",
     "eslint-config-escapace": "5.12.1",
     "esroll": "1.1.5",
-    "hono": "4.11.9",
+    "hono": "4.11.10",
     "knip": "5.83.1",
     "lefthook": "2.1.1",
     "prettier": "3.8.1",
