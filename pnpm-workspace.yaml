@@ -28,8 +28,8 @@ minimumReleaseAgeExclude:
   - syncpack-linux-x64-musl
   - syncpack-windows-arm64
   - syncpack-windows-x64
-  # Renovate security update: hono@4.11.10 || 4.12.4
-  - hono@4.11.10 || 4.12.4
+  # Renovate security update: hono@4.11.10 || 4.12.4 || 4.12.7
+  - hono@4.11.10 || 4.12.4 || 4.12.7
 onlyBuiltDependencies:
   - esbuild
   - lefthook
