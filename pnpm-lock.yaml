@@ -46,8 +46,8 @@ importers:
         specifier: 1.1.5
         version: 1.1.5(@types/node@24.9.1)
       hono:
-        specifier: 4.12.4
-        version: 4.12.4
+        specifier: 4.12.7
+        version: 4.12.7
       knip:
         specifier: 5.85.0
         version: 5.85.0(@types/node@24.9.1)(typescript@5.9.3)
@@ -2006,8 +2006,8 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  hono@4.12.4:
-    resolution: {integrity: sha512-ooiZW1Xy8rQ4oELQ++otI2T9DsKpV0M6c6cO6JGx4RTfav9poFFLlet9UMXHZnoM1yG0HWGlQLswBGX3RZmHtg==}
+  hono@4.12.7:
+    resolution: {integrity: sha512-jq9l1DM0zVIvsm3lv9Nw9nlJnMNPOcAtsbsgiUhWcFzPE99Gvo6yRTlszSLLYacMeQ6quHD6hMfId8crVHvexw==}
     engines: {node: '>=16.9.0'}
 
   html-escaper@2.0.2:
@@ -5205,7 +5205,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hono@4.12.4: {}
+  hono@4.12.7: {}
 
   html-escaper@2.0.2: {}
 
