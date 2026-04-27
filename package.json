@@ -20,7 +20,7 @@
     "@vitest/coverage-v8": "4.1.4",
     "es-toolkit": "1.45.1",
     "eslint": "10.2.0",
-    "eslint-config-escapace": "5.16.1",
+    "eslint-config-escapace": "5.17.0",
     "esroll": "1.2.1",
     "hono": "4.12.14",
     "knip": "6.4.1",
