@@ -21,7 +21,7 @@
     "es-toolkit": "1.46.0",
     "eslint": "10.2.1",
     "eslint-config-escapace": "5.17.0",
-    "esroll": "1.2.2",
+    "esroll": "1.2.3",
     "hono": "4.12.14",
     "knip": "6.6.1",
     "lefthook": "2.1.6",
