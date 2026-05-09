@@ -15,8 +15,8 @@ minimumReleaseAgeExclude:
   - eslint-config-escapace
   - esroll
   - fastify-fetch
-  # Renovate security update: hono@4.12.16
-  - hono@4.11.10 || 4.12.4 || 4.12.7 || 4.12.12 || 4.12.14 || 4.12.16
+  # Renovate security update: hono@4.12.16 || 4.12.18
+  - hono@4.11.10 || 4.12.4 || 4.12.7 || 4.12.12 || 4.12.14 || 4.12.16 || 4.12.18
   - pointe
   - prettier-config-escapace
   - seedpods
