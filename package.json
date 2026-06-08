@@ -12,25 +12,25 @@
     "bcp-47-normalize": "^2.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "21.0.1",
-    "@commitlint/config-conventional": "21.0.1",
+    "@commitlint/cli": "21.0.2",
+    "@commitlint/config-conventional": "21.0.2",
     "@escapace/pnpm-pack": "0.9.1",
     "@escapace/syncpack-configuration": "0.3.0",
     "@ls-lint/ls-lint": "2.3.1",
-    "@vitest/coverage-v8": "4.1.6",
-    "es-toolkit": "1.46.1",
-    "eslint": "10.4.0",
+    "@vitest/coverage-v8": "4.1.8",
+    "es-toolkit": "1.47.0",
+    "eslint": "10.4.1",
     "eslint-config-escapace": "5.19.1",
     "esroll": "1.2.3",
-    "hono": "4.12.21",
-    "knip": "6.14.1",
-    "lefthook": "2.1.8",
+    "hono": "4.12.23",
+    "knip": "6.15.0",
+    "lefthook": "2.1.9",
     "prettier": "3.8.3",
     "prettier-config-escapace": "1.2.2",
     "syncpack": "15.3.1",
-    "tsx": "4.22.3",
+    "tsx": "4.22.4",
     "typescript": "6.0.3",
-    "vitest": "4.1.6"
+    "vitest": "4.1.8"
   },
   "devEngines": {
     "packageManager": {
