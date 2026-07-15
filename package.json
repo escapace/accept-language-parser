@@ -17,20 +17,20 @@
     "@escapace/pnpm-pack": "0.9.1",
     "@escapace/syncpack-configuration": "0.3.0",
     "@ls-lint/ls-lint": "2.3.1",
-    "@vitest/coverage-v8": "4.1.9",
+    "@vitest/coverage-v8": "4.1.10",
     "es-toolkit": "1.49.0",
     "eslint": "10.6.0",
     "eslint-config-escapace": "5.20.0",
     "esroll": "1.2.3",
-    "hono": "4.12.27",
-    "knip": "6.23.0",
+    "hono": "4.12.28",
+    "knip": "6.25.0",
     "lefthook": "2.1.9",
     "prettier": "3.9.4",
     "prettier-config-escapace": "1.2.2",
     "syncpack": "15.3.2",
-    "tsx": "4.22.4",
+    "tsx": "4.23.0",
     "typescript": "6.0.3",
-    "vitest": "4.1.9"
+    "vitest": "4.1.10"
   },
   "devEngines": {
     "packageManager": {
